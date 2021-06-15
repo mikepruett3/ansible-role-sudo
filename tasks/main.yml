@@ -1,2 +1,67 @@
 ---
 # tasks file for ansible-role-sudo/
+
+- name: Include OS-specific variables.
+  include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_os_family }}_{{ ansible_distribution_major_version }}.yaml"
+        - "{{ ansible_distribution }}.yaml"
+        - "{{ ansible_os_family }}.yaml"
+        - default.yaml
+      paths:
+        - "vars"
+
+#- name: "Gather the package facts"
+#  ansible.builtin.package_facts:
+#    manager: auto
+#  when: ansible_facts.packages is not defined
+
+- name: "Create /etc/sudoers.d folder (if it not already exists!)"
+  ansible.builtin.file:
+    path: /etc/sudoers.d
+    owner: root
+    group: root
+    state: directory
+    mode: '0750'
+
+- name: "Deploy sudoers file for aliases in /etc/sudoers.d"
+  ansible.builtin.template:
+    src: aliases.j2
+    dest: "/etc/sudoers.d/aliases"
+    owner: root
+    group: root
+    mode: '0440'
+    validate: /usr/sbin/visudo -cf %s
+
+- name: "Deploy sudoers file for superusers in /etc/sudoers.d"
+  ansible.builtin.template:
+    src: superusers.j2
+    dest: "/etc/sudoers.d/superusers"
+    owner: root
+    group: root
+    mode: '0440'
+    validate: /usr/sbin/visudo -cf %s
+
+- name: "Check for groups existence"
+  shell: getent group {{ sudo_group }}
+  register: group
+  when: sudo_group is defined
+  ignore_errors: true
+  tags:
+    - group
+
+- name: "Create sudoers file for sudo_group in /etc/sudoers.d"
+  ansible.builtin.template:
+    src: group.j2
+    dest: "/etc/sudoers.d/{{ sudo_group }}"
+    owner: root
+    group: root
+    mode: '0440'
+    validate: /usr/sbin/visudo -cf %s
+  when:
+    - ssh_group is defined
+    - group.rc == 0
+  tags:
+    - group

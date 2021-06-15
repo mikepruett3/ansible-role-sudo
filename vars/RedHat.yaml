@@ -1,0 +1,3 @@
+---
+# vars file for ansible-role-sudo/  
+super_users: "wheel"

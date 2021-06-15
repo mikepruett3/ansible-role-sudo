@@ -1,2 +1,3 @@
 ---
 # defaults file for ansible-role-sudo/
+sudo_group: "mygroup"
