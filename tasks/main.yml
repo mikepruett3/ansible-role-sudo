@@ -55,7 +55,7 @@
 - name: "Create sudoers file for sudo_group in /etc/sudoers.d"
   ansible.builtin.template:
     src: group.j2
-    dest: "/etc/sudoers.d/{{ sudo_group | regex_replace("[^A-Za-z0-9]", "") }}"
+    dest: '/etc/sudoers.d/{{ sudo_group | regex_replace("[^A-Za-z0-9]", "") }}'
     owner: root
     group: root
     mode: '0440'
