@@ -49,8 +49,6 @@
   register: group
   when: sudo_group is defined
   ignore_errors: true
-  tags:
-    - group
 
 - name: "Create sudoers file for sudo_group in /etc/sudoers.d"
   ansible.builtin.template:
@@ -63,5 +61,3 @@
   when:
     - ssh_group is defined
     - group.rc == 0
-  tags:
-    - group
