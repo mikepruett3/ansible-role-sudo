@@ -13,5 +13,5 @@
     mode: '0440'
     validate: /usr/sbin/visudo -cf %s
   when:
-    - ssh_group is defined
+    #- ssh_group is defined
     - group.rc == 0
