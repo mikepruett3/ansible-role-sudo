@@ -1,3 +1,6 @@
+---
+# Groups tasks file for ansible-role-sudo/
+
 - name: "Check for groups existence"
   shell: getent group {{ sudo_group }}
   register: group
