@@ -9,11 +9,6 @@
     manager: auto
   when: ansible_facts.packages is not defined
 
-- name: "Delete any existing files in the /etc/sudoers.d folder"
-  ansible.builtin.file:
-    path: /etc/sudoers.d
-    state: absent
-
 - name: "Create /etc/sudoers.d folder (if it not already exists!)"
   ansible.builtin.file:
     path: /etc/sudoers.d
