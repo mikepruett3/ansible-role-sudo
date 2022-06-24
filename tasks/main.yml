@@ -52,3 +52,22 @@
   when:
     - sudo_group is defined
     - group.rc == 0
+
+- name: "Check for rsync_group group existence"
+  shell: getent group {{ rsync_group }}
+  register: rsync
+  when: "'govolution' in group_names"
+  ignore_errors: true
+
+- name: "Create sudoers file for rsync_group in /etc/sudoers.d"
+  ansible.builtin.template:
+    src: rsync.j2
+    dest: '/etc/sudoers.d/{{ rsync_group | regex_replace("[^A-Za-z0-9]", "") }}'
+    owner: root
+    group: root
+    mode: '0440'
+    validate: /usr/sbin/visudo -cf %s
+  when:
+    - rsync_group is defined
+    - rsync.rc == 0
+    - "'govolution' in group_names"
