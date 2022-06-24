@@ -17,6 +17,11 @@
     state: directory
     mode: '0750'
 
+- name: "Delete any existing files in the /etc/sudoers.d folder"
+  ansible.builtin.file:
+    path: /etc/sudoers.d/*.*
+    state: absent
+
 - name: "Deploy sudoers file for aliases in /etc/sudoers.d"
   ansible.builtin.template:
     src: aliases.j2
