@@ -20,7 +20,7 @@
   ansible.builtin.lineinfile:
     path: /etc/sudoers
     insertafter: ^[\s]*Defaults.*\benv_reset\b.*$
-    line: Defaults        logfile=/var/log/secure
+    line: Defaults        logfile=/var/log/sudo.log
     validate: /usr/sbin/visudo -cf %s
   when: ansible_os_family == 'Debian'
 
