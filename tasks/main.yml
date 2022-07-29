@@ -19,7 +19,7 @@
 - name: "Enable logfile option with appropriate value in /etc/sudoers (Debian)"
   ansible.builtin.lineinfile:
     path: /etc/sudoers
-    regexp: ^Defaults
+    #regexp: ^Defaults
     insertafter: ^[\s]*Defaults.*\benv_reset\b.*$
     line: Defaults logfile=/var/log/secure
     validate: /usr/sbin/visudo -cf %s
