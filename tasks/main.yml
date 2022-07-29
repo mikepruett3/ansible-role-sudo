@@ -20,7 +20,7 @@
   ansible.builtin.lineinfile:
     path: /etc/sudoers
     regexp: ^Defaults
-    insertafter: ^[\s]*Defaults*\env_reset\b.*$
+    insertafter: ^[\s]*Defaults.*\env_reset\b.*$
     line: Defaults logfile=/var/log/secure
     validate: /usr/sbin/visudo -cf %s
   when: ansible_os_family == 'Debian'
