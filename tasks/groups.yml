@@ -2,7 +2,7 @@
 # Groups tasks file for ansible-role-sudo/
 
 - name: "Check for groups existence"
-  shell: getent group {{ sudo_group }}
+  ansible.builtin.shell: getent group {{ sudo_group }}
   register: group
   when: sudo_group is defined
   ignore_errors: true
